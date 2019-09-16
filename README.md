@@ -9,7 +9,12 @@ shotty uses the configuration file created by the AWS cli for access control e.g
 'aws configure -- profile shotty'
 
 ## Running
-'pipenv run python shotty/shotty.py <command> <--project=PROJECT>'
+'pipenv run python shotty/shotty.py <command> <subcommand> <--project=PROJECT>'
 
-*command* is list, start or stop
+*command* is instances, volumes or snapshots list, start or stop
+*subcommand* is:
+       instances:  list, stop, start, snapshot
+       volumes:  list
+       snapshots:  list
+
 *project* is optional
