@@ -95,11 +95,24 @@ def create_snapshots(project):
     "Create snapshots for EC2 instances"
 
     instances = filter_instances(project)
-
+    icount = 0
+    vcount = 0
     for i in instances:
+        print("Stopping instance {0}...".format(i.id))
+        i.stop()
+        i.wait_until_stopped()
+        icount += 1
         for v in i.volumes.all():
             print("Creating snapshot for {0}".format(v.id))
             v.create_snapshot(Description="Created by Snapshotalyzer 30000")
+            vcount += 1
+        print("Starting {0}...".format(i.id))
+        i.start()  #do not have to wait for completion of snapshot to restart
+        print("Waiting for {0} to start...".format(i.id))
+        i.wait_until_running() #wait for each machine to come up before next
+
+    print("Job is complete!")
+    print("Snapshots taken for {0} volumes across {1} instances".format(str(vcount), str(icount)))
 
     return
 
